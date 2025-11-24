@@ -28,8 +28,9 @@
     margin: 0 auto;
 }
 
-.exit-btn {
-    background: #FCA5A5;
+.exit-btn 
+{
+    background: #bbb6b6;
     border: none;
     padding: 1rem 2rem;
     font-weight: 700;
@@ -40,8 +41,9 @@
     margin-top: 1rem;
 }
 
-.btn-primary {
-    background: #8B5CF6;
+.btn-primary 
+{
+    background: #bff2ff;
     color: white;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -50,7 +52,8 @@
     border-radius: 4px;
 }
 
-.btn-secondary {
+.btn-secondary 
+{
     background: #E5E7EB;
     border: none;
     padding: 0.75rem 1.5rem;
@@ -59,7 +62,8 @@
     border-radius: 4px;
 }
 
-.button-group {
+.button-group 
+{
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
@@ -70,6 +74,7 @@
 .btn-secondary:hover,
 .edit-btn:hover,
 .exit-btn:hover,
-.add-icon-btn:hover {
+.add-icon-btn:hover 
+{
     opacity: 0.9;
 }

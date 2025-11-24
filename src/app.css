@@ -1,19 +1,19 @@
 :root {
     /* Colors - Updated to match Figma */
-    --color-primary: #6366F1; /* Indigo/Purple from design */
-    --color-primary-light: #818CF8;
+    --color-primary: #d9daec; /* Indigo/Purple from design */
+    --color-primary-light: #b8baca;
     --color-secondary: #DBEAFE;
-    --color-accent: #E9D5FF;
+    --color-accent: #e4dfeb;
     --color-success: #4CAF50;
-    --color-danger: #FCA5A5;
-    --color-text: #1F2937;
+    --color-danger: #f0dada;
+    --color-text: #0b0d0f;
     --color-text-muted: #6B7280;
-    --color-background: #6366F1; /* Purple gradient background */
-    --color-background-light: #818CF8;
+    --color-background: #dcb9e0; /* Purple gradient background */
+    --color-background-light: #dcd6dd;
     --color-white: #FFFFFF;
     --color-card-bg: #F9FAFB;
     --color-border: #E5E7EB;
-    --color-edit-btn: #7DD3FC; /* Light blue for edit button */
+    --color-edit-btn: #7dfcfc; /* Light blue for edit button */
     
     /* Spacing */
     --spacing-xs: 0.5rem;

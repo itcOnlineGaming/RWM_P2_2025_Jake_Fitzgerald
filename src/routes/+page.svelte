@@ -1,19 +1,26 @@
 <script lang="ts">
 	import { goto } from "$app/navigation";
-    import { base } from '$app/paths';
+    //import { base } from '$app/paths';
+    import { tasksCompletedStore } from '$lib/stores/tasks.js';
+    import { get } from 'svelte/store';
     import './styles.css';
 
+    import jigsaw_base from '$lib/images/jigsaw_original.jpg';
     import jigsaw_0 from '$lib/images/jigsaw_0.png';
     import jigsaw_1 from '$lib/images/jigsaw_1.png';
     import jigsaw_2 from '$lib/images/jigsaw_2.png';
-    import jigsaw_base from '$lib/images/jigsaw_original.jpg';
+    import jigsaw_complete from '$lib/images/jigsaw_complete.png';
+    
 
+    // Tasks completed
     let taskCount = 3;
+    const { tasks_completed_number } = get(tasksCompletedStore);
+    taskCount = tasks_completed_number;
 
     function OnClickNavigate()
     {
         console.log("Confirm Button Clicked");
-        goto(`${base}/TasksScreen`, {noScroll:false});
+        goto("/TasksScreen", {noScroll:false});
     }
 
 
@@ -37,8 +44,13 @@
 {/if}
 
 {#if taskCount === 3}
-    <p>All tasks completed</p>
+    <p>3 tasks completed</p>
     <img src={jigsaw_2} alt="Jigsaw" width="200" />
+{/if}
+
+{#if taskCount === 4}
+    <p>All tasks completed</p>
+    <img src={jigsaw_complete} alt="Jigsaw" width="200" />
 {/if}
 
 
@@ -49,8 +61,7 @@
 	<div class="edit-bt">
 		<button
 			class="save-btn"
-			on:click={() => goto(`${base}/TasksScreen`)}
-		>
+			on:click={() => goto("/TasksScreen")}>
 			TASKS
 		</button>
 	</div>

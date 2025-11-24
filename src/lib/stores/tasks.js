@@ -1,7 +1,8 @@
 import { writable } from 'svelte/store';
 
 // Initialize with default tasks
-const defaultTasks = [
+const defaultTasks = 
+[
     { id: 1, text: 'Complete Graph', completed: false }, // Hard
     { id: 2, text: 'Write up report', completed: false }, // Medium
     { id: 3, text: 'Submit proposal', completed: false }, // Easy
@@ -10,3 +11,7 @@ const defaultTasks = [
 ];
 
 export const tasksStore = writable(defaultTasks);
+
+export const tasksCompletedStore = writable({
+    tasks_completed_number: 4
+});
