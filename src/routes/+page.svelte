@@ -4,6 +4,10 @@
     import { tasksStore, tasksCompletedStore } from '$lib/stores/tasks.js';
     import { get } from 'svelte/store';
     import './styles.css';
+    // Jigsaw imports
+    import JigsawBoard from '../Components/JigsawBoard.svelte';
+
+
 
     import jigsaw_base from '$lib/images/jigsaw_original.jpg';
     import jigsaw_0 from '$lib/images/jigsaw_0.png';
@@ -93,7 +97,7 @@
     <img src={jigsaw_complete} alt="Jigsaw" width="200" />
 {/if}
 
-
+<!----
 <div class="rectangle-wrapper">
     {#each tasks as task}
         <div class="tooltip-container">
@@ -112,6 +116,7 @@
         </div>
     {/each}
 </div>
+--->
 
 <div class="container">
 	<slot />
@@ -122,6 +127,15 @@
 			TASKS
 		</button>
 	</div>
+</div>
+
+<JigsawBoard tasks={tasks} totalPieces={12} />
+
+
+<div class="container">
+    <button class="save-btn" on:click={() => goto("/TasksScreen")}>
+        TASKS
+    </button>
 </div>
 
 <style>
@@ -157,6 +171,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
 .tooltip-container 
 {
     position: relative;
