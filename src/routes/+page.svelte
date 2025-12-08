@@ -6,14 +6,6 @@
     import './styles.css';
     // Jigsaw imports
     import JigsawBoard from '../Components/JigsawBoard.svelte';
-
-
-
-    import jigsaw_base from '$lib/images/jigsaw_original.jpg';
-    import jigsaw_0 from '$lib/images/jigsaw_0.png';
-    import jigsaw_1 from '$lib/images/jigsaw_1.png';
-    import jigsaw_2 from '$lib/images/jigsaw_2.png';
-    import jigsaw_complete from '$lib/images/jigsaw_complete.png';
     
 
     // Tasks completed
@@ -72,30 +64,6 @@
 
 <h1> Task - Jigsaw Abstraction</h1>
 
-{#if taskCount === 0}
-    <p>No tasks completed</p>
-    <img src={jigsaw_base} alt="Jigsaw" width="200" />
-{/if}
-
-{#if taskCount === 1}
-    <p>1 task completed</p>
-    <img src={jigsaw_0} alt="Jigsaw" width="200" />
-{/if}
-
-{#if taskCount === 2}
-    <p>2 tasks completed</p>
-    <img src={jigsaw_1} alt="Jigsaw" width="200" />
-{/if}
-
-{#if taskCount === 3}
-    <p>3 tasks completed</p>
-    <img src={jigsaw_2} alt="Jigsaw" width="200" />
-{/if}
-
-{#if taskCount === 4}
-    <p>All tasks completed</p>
-    <img src={jigsaw_complete} alt="Jigsaw" width="200" />
-{/if}
 
 <!----
 <div class="rectangle-wrapper">
@@ -118,6 +86,10 @@
 </div>
 --->
 
+
+
+<JigsawBoard tasks={tasks} totalPieces={25} />
+
 <div class="container">
 	<slot />
 	<div class="edit-bt">
@@ -127,15 +99,6 @@
 			TASKS
 		</button>
 	</div>
-</div>
-
-<JigsawBoard tasks={tasks} totalPieces={25} />
-
-
-<div class="container">
-    <button class="save-btn" on:click={() => goto("/TasksScreen")}>
-        TASKS
-    </button>
 </div>
 
 <style>

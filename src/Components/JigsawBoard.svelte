@@ -94,50 +94,56 @@
     $: cols = dimensions.cols;
 </script>
 
-<div class="jigsaw-board">
-    <div 
-        class="jigsaw-grid" 
-        style="
-            grid-template-columns: repeat({cols}, 130px); 
-            grid-template-rows: repeat({rows}, 130px);
-        ">
-        {#each allPieces as piece, i}
-            <div class="piece-container tooltip-container" title={piece?.text || 'Empty slot'}>
-                <JigsawPiece 
-                    type={getPieceType(i, rows, cols)}
-                    color={piece ? getTaskColour(piece) : (allTasksCompleted ? completedPlaceholderColor : placeholderColor)}
-                    size={160}
-                    row={Math.floor(i / cols)}
-                    col={i % cols}
-                    cols={cols}
-                />
-                {#if piece}
-                    <span class="piece-label">{piece.text.slice(0, 15)}{piece.text.length > 15 ? '...' : ''}</span>
-                    <span class="tooltip-text">
-                        <strong>{piece.text}</strong><br />
-                        Status: 
-                        <span class="{piece.completed ? 'status-completed' : 'status-incomplete'}">
-                            {piece.completed ? 'Completed' : 'Not completed'}
-                        </span><br />
-                        Difficulty: <span class="difficulty-badge" style="color: {getTaskColour(piece)}">{piece.difficulty}</span>
-                    </span>
-                {:else}
-                    <span class="piece-label empty">?</span>
-                {/if}
-            </div>
-        {/each}
+<div class="jigsaw-board-wrapper">
+    <div class="jigsaw-board">
+        <div 
+            class="jigsaw-grid" 
+            style="
+                grid-template-columns: repeat({cols}, 130px); 
+                grid-template-rows: repeat({rows}, 130px);
+            ">
+            {#each allPieces as piece, i}
+                <div class="piece-container tooltip-container" title={piece?.text || 'Empty slot'}>
+                    <JigsawPiece 
+                        type={getPieceType(i, rows, cols)}
+                        color={piece ? getTaskColour(piece) : (allTasksCompleted ? completedPlaceholderColor : placeholderColor)}
+                        size={160}
+                        row={Math.floor(i / cols)}
+                        col={i % cols}
+                        cols={cols}
+                    />
+                    {#if piece}
+                        <span class="piece-label">{piece.text.slice(0, 15)}{piece.text.length > 15 ? '...' : ''}</span>
+                        <div class="tooltip-text">
+                            <div><strong>{piece.text}</strong></div>
+                            <div>Status: 
+                                <span class="{piece.completed ? 'status-completed' : 'status-incomplete'}">
+                                    {piece.completed ? 'Completed' : 'Not completed'}
+                                </span>
+                            </div>
+                            <div>Difficulty: <span class="difficulty-badge" style="color: {getTaskColour(piece)}">{piece.difficulty}</span></div>
+                        </div>
+                    {:else}
+                        <span class="piece-label empty">?</span>
+                    {/if}
+                </div>
+            {/each}
+        </div>
     </div>
 </div>
 
 <style>
-    .jigsaw-board {
+    .jigsaw-board-wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0;
-        border: 3px solid black;
-        width: fit-content;
+        width: 100%;
+    }
+    
+    .jigsaw-board {
+        display: inline-block;
         margin: 2rem auto;
+        line-height: 0;
     }
     
     .jigsaw-grid {
@@ -172,9 +178,21 @@
         background-color: #333;
         color: white;
         font-size: 0.9rem;
-        white-space: nowrap;
+        white-space: normal;
+        min-width: 200px;
+        max-width: 250px;
         z-index: 100;
         pointer-events: none;
+        text-align: left;
+        line-height: 1.5;
+    }
+    
+    .tooltip-text > div {
+        margin-bottom: 4px;
+    }
+    
+    .tooltip-text > div:last-child {
+        margin-bottom: 0;
     }
     
     .piece-container:hover .tooltip-text {
