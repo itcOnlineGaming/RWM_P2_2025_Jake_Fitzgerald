@@ -70,11 +70,24 @@
         return shuffled;
     }
     
-    // Create randomized pieces array
-    $: allPieces = shuffleArray([
-        ...tasks, 
-        ...Array(Math.max(0, totalPieces - tasks.length)).fill(null)
-    ]);
+    // Create array with tasks in random positions but maintain grid structure
+    let allPieces: any[] = [];
+    $: {
+        const shuffledTasks = shuffleArray([...tasks]);
+        const placeholderCount = Math.max(0, totalPieces - tasks.length);
+        
+        // Create array of all positions
+        const positions = Array.from({length: totalPieces}, (_, i) => i);
+        const shuffledPositions = shuffleArray(positions);
+        
+        // Place tasks at random positions
+        const tempPieces = Array(totalPieces).fill(null);
+        shuffledTasks.forEach((task, i) => {
+            tempPieces[shuffledPositions[i]] = task;
+        });
+        
+        allPieces = tempPieces;
+    }
     
     $: dimensions = getGridDimensions(totalPieces);
     $: rows = dimensions.rows;
@@ -85,15 +98,18 @@
     <div 
         class="jigsaw-grid" 
         style="
-            grid-template-columns: repeat({cols}, 80px); 
-            grid-template-rows: repeat({rows}, 80px);
+            grid-template-columns: repeat({cols}, 130px); 
+            grid-template-rows: repeat({rows}, 130px);
         ">
         {#each allPieces as piece, i}
             <div class="piece-container" title={piece?.text || 'Empty slot'}>
                 <JigsawPiece 
                     type={getPieceType(i, rows, cols)}
                     color={piece ? getTaskColour(piece) : (allTasksCompleted ? completedPlaceholderColor : placeholderColor)}
-                    size={80}
+                    size={160}
+                    row={Math.floor(i / cols)}
+                    col={i % cols}
+                    cols={cols}
                 />
                 {#if piece}
                     <span class="piece-label">{piece.text.slice(0, 15)}{piece.text.length > 15 ? '...' : ''}</span>
@@ -118,7 +134,7 @@
     
     .jigsaw-grid {
         display: grid;
-        gap: -1px;
+        gap: 0;
     }
     
     .piece-container {
@@ -126,22 +142,27 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        width: 160px;
+        height: 160px;
     }
     
     .piece-label {
         position: absolute;
-        font-size: 0.65rem;
+        font-size: 1rem;
         font-weight: bold;
         color: white;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
         pointer-events: none;
         text-align: center;
-        max-width: 70px;
+        max-width: 130px;
+        line-height: 1.2;
+        z-index: 10;
     }
     
     .piece-label.empty {
-        font-size: 1.5rem;
+        font-size: 2.5rem;
         color: #999;
         text-shadow: none;
+        z-index: 10;
     }
 </style>
