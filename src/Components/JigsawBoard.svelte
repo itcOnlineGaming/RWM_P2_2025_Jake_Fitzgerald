@@ -102,7 +102,7 @@
             grid-template-rows: repeat({rows}, 130px);
         ">
         {#each allPieces as piece, i}
-            <div class="piece-container" title={piece?.text || 'Empty slot'}>
+            <div class="piece-container tooltip-container" title={piece?.text || 'Empty slot'}>
                 <JigsawPiece 
                     type={getPieceType(i, rows, cols)}
                     color={piece ? getTaskColour(piece) : (allTasksCompleted ? completedPlaceholderColor : placeholderColor)}
@@ -113,6 +113,14 @@
                 />
                 {#if piece}
                     <span class="piece-label">{piece.text.slice(0, 15)}{piece.text.length > 15 ? '...' : ''}</span>
+                    <span class="tooltip-text">
+                        <strong>{piece.text}</strong><br />
+                        Status: 
+                        <span class="{piece.completed ? 'status-completed' : 'status-incomplete'}">
+                            {piece.completed ? 'Completed' : 'Not completed'}
+                        </span><br />
+                        Difficulty: <span class="difficulty-badge" style="color: {getTaskColour(piece)}">{piece.difficulty}</span>
+                    </span>
                 {:else}
                     <span class="piece-label empty">?</span>
                 {/if}
@@ -137,6 +145,11 @@
         gap: 0;
     }
     
+    .tooltip-container {
+        position: relative;
+        display: inline-block;
+    }
+    
     .piece-container {
         position: relative;
         display: flex;
@@ -144,6 +157,43 @@
         justify-content: center;
         width: 160px;
         height: 160px;
+    }
+    
+    .tooltip-text {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s;
+        position: absolute;
+        bottom: 110%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 8px 12px;
+        border-radius: 6px;
+        background-color: #333;
+        color: white;
+        font-size: 0.9rem;
+        white-space: nowrap;
+        z-index: 100;
+        pointer-events: none;
+    }
+    
+    .piece-container:hover .tooltip-text {
+        visibility: visible;
+        opacity: 1;
+    }
+    
+    .status-completed {
+        color: #4CAF50;
+        font-weight: bold;
+    }
+    
+    .status-incomplete {
+        color: #F44336;
+        font-weight: bold;
+    }
+    
+    .difficulty-badge {
+        font-weight: bold;
     }
     
     .piece-label {
