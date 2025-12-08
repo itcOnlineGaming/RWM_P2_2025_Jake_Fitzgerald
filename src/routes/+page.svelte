@@ -129,7 +129,7 @@
 	</div>
 </div>
 
-<JigsawBoard tasks={tasks} totalPieces={12} />
+<JigsawBoard tasks={tasks} totalPieces={25} />
 
 
 <div class="container">

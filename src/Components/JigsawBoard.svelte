@@ -2,7 +2,7 @@
     import JigsawPiece from './JigsawPiece.svelte';
     
     export let tasks: Array<{id: number, text: string, completed: boolean, difficulty: string}>;
-    export let totalPieces: number = 12; // Total jigsaw pieces to show (including placeholders)
+    export let totalPieces: number = 12;
     
     type Difficulty = 'EASY' | 'MEDIUM' | 'HARD' | 'GREY';
     const difficultyColours: Record<Difficulty, string> = {
@@ -12,11 +12,9 @@
         GREY: "#9E9E9E"
     };
     
-    // Placeholder color - lighter grey for unassigned pieces (or green when all complete)
     const placeholderColor = "#E0E0E0";
-    const completedPlaceholderColor = "#4CAF50"; // Green when all tasks done
+    const completedPlaceholderColor = "#4CAF50";
     
-    // Check if all tasks are completed
     $: allTasksCompleted = tasks.length > 0 && tasks.every(task => task.completed);
     
     function getTaskColour(task: any): string {
@@ -26,7 +24,6 @@
         return difficultyColours[task.difficulty as Difficulty] || '#ccc';
     }
     
-    // Calculate grid dimensions based on total piece count
     function getGridDimensions(count: number): {rows: number, cols: number} {
         if (count <= 0) return {rows: 0, cols: 0};
         if (count <= 4) return {rows: 2, cols: 2};
@@ -36,13 +33,11 @@
         if (count <= 16) return {rows: 4, cols: 4};
         if (count <= 20) return {rows: 4, cols: 5};
         
-        // For larger counts, make roughly square
         const cols = Math.ceil(Math.sqrt(count));
         const rows = Math.ceil(count / cols);
         return {rows, cols};
     }
     
-    // Determine piece type based on position
     function getPieceType(index: number, rows: number, cols: number): 'corner-tl' | 'corner-tr' | 'corner-bl' | 'corner-br' | 'edge-top' | 'edge-right' | 'edge-bottom' | 'edge-left' | 'middle' {
         const row = Math.floor(index / cols);
         const col = index % cols;
@@ -52,24 +47,35 @@
         const isLeftCol = col === 0;
         const isRightCol = col === cols - 1;
         
-        // Corners
         if (isTopRow && isLeftCol) return 'corner-tl';
         if (isTopRow && isRightCol) return 'corner-tr';
         if (isBottomRow && isLeftCol) return 'corner-bl';
         if (isBottomRow && isRightCol) return 'corner-br';
         
-        // Edges
         if (isTopRow) return 'edge-top';
         if (isBottomRow) return 'edge-bottom';
         if (isLeftCol) return 'edge-left';
         if (isRightCol) return 'edge-right';
         
-        // Middle
         return 'middle';
     }
     
-    // Create array of pieces: real tasks + placeholders
-    $: allPieces = [...tasks, ...Array(Math.max(0, totalPieces - tasks.length)).fill(null)];
+    // Shuffle function using Fisher-Yates algorithm
+    function shuffleArray<T>(array: T[]): T[] {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+    
+    // Create randomized pieces array
+    $: allPieces = shuffleArray([
+        ...tasks, 
+        ...Array(Math.max(0, totalPieces - tasks.length)).fill(null)
+    ]);
+    
     $: dimensions = getGridDimensions(totalPieces);
     $: rows = dimensions.rows;
     $: cols = dimensions.cols;
@@ -104,12 +110,15 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 2rem;
+        padding: 0;
+        border: 3px solid black;
+        width: fit-content;
+        margin: 2rem auto;
     }
     
     .jigsaw-grid {
         display: grid;
-        gap: -1px; /* Overlap slightly for puzzle effect */
+        gap: -1px;
     }
     
     .piece-container {
